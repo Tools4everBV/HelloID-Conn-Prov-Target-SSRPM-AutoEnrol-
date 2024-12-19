@@ -29,6 +29,10 @@ CREATE PROCEDURE [dbo].[EnrollUser]
 	@AD_CanonicalName varchar(max),
 	@AD_sAMAccountName varchar(255),
 	@AD_ObjectSID varchar(255),
+	@AD_CommonName varchar(255) = null,
+	@AD_DisplayName varchar(255) = null,
+	@AD_SurName varchar(255) = null,
+	@AD_GivenName varchar(255) = null,
 	@AD_EmailAddress varchar(255),
 	@Private_Mobile varchar(255) = null,
 	@Private_EmailAddress varchar(255) = null,
@@ -97,7 +101,13 @@ BEGIN
 		,[Mobile Phone Number] 
 		,[Email Address] 
 		,[sAMAccountName] 
-		,[InternalEmailAddress])
+		,[InternalEmailAddress]
+		,[AD_CommonName]
+		,[AD_DisplayName]
+		,[AD_SurName]
+		,[AD_GivenName]
+		,[AD_Name]
+		,[AD_UserPrincipalName])
 	values (@AD_CanonicalName
 		,GETDATE() 
 		,'1900-01-01 00:00:00.000' 
@@ -115,6 +125,12 @@ BEGIN
 		,ISNULL(@Private_EmailAddress,'')
 		,@AD_sAMAccountName 
 		,ISNULL(@AD_EmailAddress,'')
+		,@AD_CommonName
+		,@AD_DisplayName
+		,@AD_SurName
+		,@AD_GivenName
+		,@AD_sAMAccountName
+		,@AD_EmailAddress
 		)
 	select @NewUserID = SCOPE_IDENTITY()
 
@@ -189,6 +205,10 @@ CREATE PROCEDURE [dbo].[UpdateUser]
 	@AD_EmailAddress varchar(255),
 	@Private_Mobile varchar(255) = null,
 	@Private_EmailAddress varchar(255) = null,
+	@AD_CommonName varchar(255) = null,
+	@AD_DisplayName varchar(255) = null,
+	@AD_SurName varchar(255) = null,
+	@AD_GivenName varchar(255) = null,
 	@XML_Answers XML = null
 
 AS
@@ -238,10 +258,15 @@ BEGIN
 		set sAMAccountName = @AD_sAMAccountName
 			,[Account SID] = @AD_ObjectSID
 			,[Account Name] = @AD_CanonicalName
-
 			,[InternalEmailAddress] = @AD_EmailAddress
 			,[Email Address] = @Private_EmailAddress
 			,[Mobile Phone Number] = @Private_Mobile
+			,[AD_CommonName] = @AD_CommonName
+			,[AD_DisplayName] = @AD_DisplayName
+			,[AD_SurName] = @AD_SurName
+			,[AD_GivenName] = @AD_GivenName
+			,[AD_Name] = @AD_sAMAccountName
+			,[AD_UserPrincipalName] = @AD_EmailAddress
 		WHERE ID = @SSRPM_ID
 		end
 
@@ -337,5 +362,4 @@ BEGIN
 	
 END
 GO
-
 

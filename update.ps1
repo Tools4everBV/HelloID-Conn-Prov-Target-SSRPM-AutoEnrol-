@@ -135,6 +135,10 @@ function Update-SSRPMuser {
         [void]$SqlCmd.Parameters.AddWithValue("@Private_EmailAddress", $account.PrivateMail)
         [void]$SqlCmd.Parameters.AddWithValue("@Private_Mobile", $account.PrivateMobile)
         [void]$SqlCmd.Parameters.AddWithValue("@XML_Answers", $XML_Answers)
+        [void]$SqlCmd.Parameters.AddWithValue("@AD_CommonName", $account.commonName)
+        [void]$SqlCmd.Parameters.AddWithValue("@AD_DisplayName", $account.displayName)
+        [void]$SqlCmd.Parameters.AddWithValue("@AD_SurName", $account.surname)
+        [void]$SqlCmd.Parameters.AddWithValue("@AD_GivenName", $account.givenName)
 
         $SqlCmd.Connection = $SqlConnection
         $SqlAdapter = [System.Data.SqlClient.SqlDataAdapter]::new($SqlCmd)
